@@ -17,7 +17,7 @@ For convenience, the JavaScript Objects for this demo have been separated into d
 
 For simplicity, all collisions in this game are done using polygons, and naive polygon intersection-detection algorithms. This is, at the moment, done within the RenderablePolygon object.
  
-An example of the demo, or a similar version, can be found at http://rgoulter.com/aster.html
+An example of the demo, or a similar version, can be found at http://rgoulter.com/aster2.html or http://rgoulter.github.com/aster/aster.html
 
 The reader may feel free to try to extend or add features to this demo. Examples of such things include:
  * Adding more asteroids when all asteroids are gone.
