@@ -59,7 +59,8 @@ function MovingObject(someObj, args){
     return o.getX && Math.abs(obj.getX() - o.getX()) < 0.0001 &&
           o.getY && Math.abs(obj.getY() - o.getY()) < 0.0001 &&
           o.getSpeed && Math.abs(obj.getSpeed() - o.getSpeed()) < 0.0001 &&
-          o.getViewAngle && Math.abs(obj.getViewAngle() - o.getViewAngle()) < 0.0001;
+          o.getViewAngle && Math.abs(obj.getViewAngle() - o.getViewAngle()) < 0.0001 &&
+          o.getObjectType() == obj.getObjectType();
   };
 
 
@@ -82,6 +83,7 @@ function MovingObject(someObj, args){
 
   obj.move = move;
   obj.equals = equals;
+  obj.getObjectType = function(){ return -1; };
 
   return obj;
 }

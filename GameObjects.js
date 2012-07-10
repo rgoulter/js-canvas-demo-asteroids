@@ -63,9 +63,9 @@ function Explosion(movingObj, args){
 
   // MobileObject Inheritance
   var mobjArgs = {x: movingParent.getX(),
-          y: movingParent.getY(),
-          angle: movingParent.getViewAngle(),
-          speed: 0};
+                  y: movingParent.getY(),
+                  angle: movingParent.getViewAngle(),
+                  speed: 0};
   var expl = movingObj || new MovingObject(null, mobjArgs);
   var t = 0;
   var parent_move = expl.move; //inherited method;
@@ -84,6 +84,8 @@ function Explosion(movingObj, args){
       var p = particlePoints[i];
       context.rect(p[0], p[1], 1, 1);
       context.closePath();
+      context.lineWidth = 2;
+      context.stroke();
     }
   };
 
