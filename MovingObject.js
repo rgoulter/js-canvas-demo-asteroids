@@ -6,17 +6,18 @@ args may contain x, y, speed, maxSpeed, angle.
 */
 function MovingObject(someObj, args){
   // Default arguments
+  var id = args.id;
   var x = args.x || 0;
   var y = args.y || 0;
   var speed = args.speed || 0;
   var maxSpeed = args.maxSpeed || 10000;
-  var viewAngle = args.angle || 0;
+  var viewAngle = args.viewAngle || args.angle || 0;
 
-  var prevX = x;
-  var prevY = y;
+  var prevX = args.prevX || x;
+  var prevY = args.prevY || y;
 
   var obj = someObj || {};
-  var speedAngle = viewAngle;
+  var speedAngle = args.speedAngle || viewAngle;
 
 
 
@@ -62,6 +63,20 @@ function MovingObject(someObj, args){
           o.getViewAngle && Math.abs(obj.getViewAngle() - o.getViewAngle()) < 0.0001 &&
           o.getObjectType() == obj.getObjectType();
   };
+  
+  
+  
+  var toObject = function(){
+    return {id: id,
+            x: x,
+            y: y,
+            prevX: prevX,
+            prevY: prevY,
+            speed: speed,
+            maxSpeed: maxSpeed,
+            viewAngle: viewAngle,
+            speedAngle: speedAngle};
+  };
 
 
 
@@ -83,6 +98,7 @@ function MovingObject(someObj, args){
 
   obj.move = move;
   obj.equals = equals;
+  obj.toObject = toObject;
   obj.getObjectType = function(){ return -1; };
 
   return obj;

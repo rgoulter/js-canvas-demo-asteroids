@@ -1,4 +1,6 @@
 var ObjectTypes = {SHIP: 0, ASTEROID: 1, BULLET: 2, EXPLOSION: 3};
+var SHOT_TIMEOUT = 750; // 1/2 second
+var SHOT_SPEED = 500; // must be larger than ship max speed.
 
 /*
 A bullet that is fired from a ship. The ship is used for initial position and velocity.
@@ -9,19 +11,12 @@ no moving obj is given.
 args expects shipParent
 */
 function Bullet(movingObj, args){
-  var SHOT_TIMEOUT = 750; // 1/2 second
-  var SHOT_SPEED = 500; // must be larger than ship max speed.
-
-  var shipParent = args.shipParent;
-
   // MobileObject Inheritance
-  var mobjArgs = {x: shipParent.getX(),
-                  y: shipParent.getY(),
-                  angle: shipParent.getViewAngle(),
-                  speed: SHOT_SPEED};
-  var shot = movingObj || new MovingObject(null, mobjArgs);
-  var t = 0;
+  var shot = movingObj || new MovingObject(null, args);
+  var t = args.t || 0;
+  
   var parent_move = shot.move; //inherited method;
+  var parent_toObj = shot.toObject;
 
   // RenderablePolygon Inheritance
   args.polyCoords = [[2, 0], [-1.4, -1.4], [-1.4, 1.4]];
@@ -33,10 +28,20 @@ function Bullet(movingObj, args){
     
     t += delta;
   }
+  
+  
+  
+  var toObject = function(){
+    var obj = parent_toObj();
+    obj.t = t;
+    
+    return obj;
+  };
 
 
 
   shot.move = move;
+  shot.toObject = toObject;
   shot.hasExpired = function(){ return t >= SHOT_TIMEOUT; };
   shot.getObjectType = function(){ return ObjectTypes.BULLET; };
 
@@ -62,20 +67,20 @@ function Explosion(movingObj, args){
   var maxRadius = args.maxRadius;
 
   // MobileObject Inheritance
-  var mobjArgs = {x: movingParent.getX(),
-                  y: movingParent.getY(),
-                  angle: movingParent.getViewAngle(),
-                  speed: 0};
-  var expl = movingObj || new MovingObject(null, mobjArgs);
-  var t = 0;
-  var parent_move = expl.move; //inherited method;
+  var expl = movingObj || new MovingObject(null, args);
+  var t = args.t || 0;
 
-  var particlePoints = [];
-  for(var i = 0; i < numParticles; i++){
-    particlePoints[i] = [];
-    particlePoints[i][0] = expl.getX();
-    particlePoints[i][1] = expl.getY();
-  }
+  var particlePoints = args.particlePoints || (function(){
+    var arr = [];
+    for(var i = 0; i < numParticles; i++){
+      arr[i] = [];
+      arr[i][0] = expl.getX();
+      arr[i][1] = expl.getY();
+    }
+    return arr; })();
+  
+  var parent_move = expl.move; //inherited method;
+  var parent_toObj = expl.toObject;
 
 
 
@@ -104,11 +109,25 @@ function Explosion(movingObj, args){
     
     t += delta;
   }
+  
+  
+  
+  var toObject = function(){
+    var obj = parent_toObj();
+    
+    obj.maxRadius = maxRadius;
+    obj.numParticles = numParticles;
+    obj.t = t;
+    obj.particlePoints = particlePoints;
+    
+    return obj;
+  };
 
 
 
   expl.render = render;
   expl.move = move;
+  expl.toObject = toObject;
   expl.hasExpired = function(){ return t >= EXPLOSION_TIMEOUT; };
   expl.getObjectType = function(){ return ObjectTypes.EXPLOSION; };
 
@@ -138,11 +157,23 @@ function Asteroid(movingObj, args){
   var rock = movingObj || new MovingObject(null, args);
 
   // RenderablePolygon Inheritance
-  args.polyCoords = makeAsteroidPolygon(rockSize, rockSize * 5);
+  args.polyCoords = args.polyCoords || makeAsteroidPolygon(rockSize, rockSize * 5);
   RenderablePolygon(rock, args);
+  
+  var parent_toObj = rock.toObject;
+  
+  
+  
+  var toObject = function(){
+    var obj = parent_toObj();
+    obj.rockSize = rockSize;
+    
+    return obj;
+  }
 
 
 
+  rock.toObject = toObject;
   rock.getObjectType = function(){ return ObjectTypes.ASTEROID; };
   rock.getRockSize = function(){ return rockSize; };
 
@@ -180,13 +211,20 @@ function SpaceShip(movingObj, args){
   RenderablePolygon(ship, args);
 
   var shot_timeout = 0;
+  
+  
+  var parent_toObj = ship.toObject;
   var parent_move = ship.move; // Inherited method.
 
 
 
   var makeShot = function(){
     if(shot_timeout <= 0){
-      var shot = new Bullet(null, {shipParent: ship});
+      var bullet_args = {x: ship.getX(),
+                         y: ship.getY(),
+                         angle: ship.getViewAngle(),
+                         speed: SHOT_SPEED};
+      var shot = new Bullet(null, bullet_args);
       shot_timeout = SHOT_DELAY;
       return shot;
     } else {
@@ -213,10 +251,20 @@ function SpaceShip(movingObj, args){
       shot_timeout -= delta;
     }
   }
+  
+  
+  
+  var toObject = function(){
+    var obj = parent_toObj();
+    obj.shot_timeout = shot_timeout;
+    
+    return obj;
+  }
 
 
 
   ship.move = move;
+  ship.toObject = toObject;
   ship.shoot = makeShot;
   ship.canShoot = function(){ return shot_timeout <= 0; };
   ship.getObjectType = function(){ return ObjectTypes.SHIP; };

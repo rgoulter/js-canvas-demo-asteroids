@@ -12,6 +12,7 @@ function RenderablePolygon(movingObj, args){
   var polyCoords = args.polyCoords;
 
   var mobj_equals = obj.equals;
+  var mobj_toObject = obj.toObject;
 
 
 
@@ -157,6 +158,15 @@ function RenderablePolygon(movingObj, args){
     
     return true;
   };
+  
+  
+  
+  var toObject = function(){
+    var obj = mobj_toObject();
+    obj.polyCoords = polyCoords;
+    
+    return obj;
+  };
 
 
 
@@ -166,6 +176,7 @@ function RenderablePolygon(movingObj, args){
   obj.collidesWith = collidesWith;
   obj.render = render;
   obj.equals = equals;
+  obj.toObject = toObject;
 
   return obj;
 }

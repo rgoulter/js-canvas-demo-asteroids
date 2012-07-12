@@ -164,11 +164,22 @@ function GameEngine(canvas){
 
   // Creates an explosion as well as removing it
   var destroyObject = function(movingObj){
+    function makeExplosion(movingObj, numParticles, maxRadius){
+      var explArgs = {x: movingObj.getX(),
+                      y: movingObj.getY(),
+                      angle: movingObj.getViewAngle(),
+                      speed: 0,
+                      numParticles: numParticles,
+                      maxRadius: maxRadius};
+      
+      return new Explosion(null, explArgs);
+    }
+    
     removeObject(movingObj);
     
     if(movingObj.getObjectType() === ObjectTypes.ASTEROID){
       // Create Explosion
-      var expl = new Explosion(null, {movingParent: movingObj, numParticles: 12, maxRadius: 70});
+      var expl = makeExplosion(movingObj, 12, 75);
       movable.push(expl);
       renderable.push(expl);
       
@@ -177,7 +188,7 @@ function GameEngine(canvas){
         createAsteroidsFromAsteroid(movingObj);
       }
     } else if(movingObj.getObjectType() === ObjectTypes.SHIP){
-      var expl = new Explosion(null, {movingParent: movingObj, numParticles: 24, maxRadius: 100});
+      var expl = makeExplosion(movingObj, 24, 100);
       movable.push(expl);
       renderable.push(expl);
     }
