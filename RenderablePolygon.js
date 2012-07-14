@@ -1,3 +1,9 @@
+// Imports / Requirements
+var MovingObject = MovingObject || global.MovingObject;
+var Geometry = Geometry || global.Geometry;
+
+
+
 /*
 Creates or Augments an object so that it renders a polygon shape.
 Object needs to be a moving object.
@@ -180,3 +186,10 @@ function RenderablePolygon(movingObj, args){
 
   return obj;
 }
+
+
+
+
+
+
+global.MovingObject = MovingObject;

@@ -1,3 +1,15 @@
+// Imports / Requirements
+var Geometry = Geometry || global.Geometry;
+var MovingObject = MovingObject || global.MovingObject;
+var RenderablePolygon = RenderablePolygon || global.RenderablePolygon;
+var ObjectTypes = ObjectTypes || global.ObjectTypes;
+var Bullet = Bullet || global.Bullet;
+var Asteroid = Asteroid || global.Asteroid;
+var Explosion = Explosion || global.Explosion;
+var SpaceShip = SpaceShip || global.SpaceShip;
+
+
+
 var KeyCodes = {LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, CTRL: 17};
 
 /**
@@ -334,3 +346,12 @@ function GameEngine(canvas){
 
   return GE;
 }
+
+
+
+
+
+
+global.KeyCodes = KeyCodes;
+
+global.GameEngine = GameEngine;

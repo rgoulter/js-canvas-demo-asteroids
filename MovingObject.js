@@ -1,4 +1,3 @@
-
 /*
 Creates or augments an object with Moving functionality.
 
@@ -103,3 +102,10 @@ function MovingObject(someObj, args){
 
   return obj;
 }
+
+
+
+
+
+
+global.MovingObject = MovingObject;

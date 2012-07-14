@@ -112,3 +112,10 @@ var Geometry = (function(){
 
   return g;
 }());
+
+
+
+
+
+
+global.Geometry = Geometry;

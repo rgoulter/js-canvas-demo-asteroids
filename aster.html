@@ -1,6 +1,14 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <script>
+      /*
+       We use this for code-reuse between Node.js and the browser.
+       The objects we want to use in Node.js are passed into the global,
+       and can thus be accessed whether using Node.js or the browser.
+      */
+      var global = {};
+    </script>
 	<script src="Geometry.js"></script>
 	<script src="MovingObject.js" ></script>
 	<script src="RenderablePolygon.js" ></script>

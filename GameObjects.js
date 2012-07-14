@@ -1,3 +1,10 @@
+// Imports / Requirements
+var Geometry = Geometry || global.Geometry;
+var MovingObject = MovingObject || global.MovingObject;
+var RenderablePolygon = RenderablePolygon || global.RenderablePolygon;
+
+
+
 var ObjectTypes = {SHIP: 0, ASTEROID: 1, BULLET: 2, EXPLOSION: 3};
 var SHOT_TIMEOUT = 750; // 1/2 second
 var SHOT_SPEED = 500; // must be larger than ship max speed.
@@ -271,3 +278,15 @@ function SpaceShip(movingObj, args){
 
   return ship;
 }
+
+
+
+
+
+
+global.ObjectTypes = ObjectTypes;
+
+global.Bullet = Bullet;
+global.Asteroid = Asteroid;
+global.Explosion = Explosion;
+global.SpaceShip = SpaceShip;
